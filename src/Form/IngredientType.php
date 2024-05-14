@@ -2,14 +2,15 @@
 
 namespace App\Form;
 
-use Assert\Length;
-use Assert\NotBlank;
+
 use App\Entity\Ingredient;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class IngredientType extends AbstractType
 {
@@ -22,7 +23,7 @@ class IngredientType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '50' // Ajoutez cette ligne
                 ],
-                'label' => 'Nom de l\'ingrédient',
+                'label' => 'Nom',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -31,8 +32,26 @@ class IngredientType extends AbstractType
                     new Assert\NotBlank()
                 ]
                 ])
-            ->add('prix')
-            ;
+            ->add('prix', MoneyType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    
+                ],
+                'label' => 'Prix',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'constraints' =>[
+                    new Assert\Positive(),
+                    new Assert\LessThan(200),
+                ]
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary mt-4'
+                ],
+                'label' => 'Créer mon ingrédient'
+            ]);
         
     }
 
