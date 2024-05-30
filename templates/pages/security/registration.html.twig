@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    EasyRecipe - Inscription
+{% endblock %}
+{% block body %}
+    <div class="container">
+    <h1>Formulaire - Inscription</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form(form) }}
+    </div>
+{% endblock %}
