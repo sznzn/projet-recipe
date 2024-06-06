@@ -10,9 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
 
 class UserType extends AbstractType
 {
@@ -50,6 +51,17 @@ class UserType extends AbstractType
             ],
             'required' => false
         ])
+        ->add('plainPassword', PasswordType::class, [
+            'attr' => [
+                'class' => 'form-control'
+            ],
+            
+            'label' => 'Mot de passe',
+            'label_attr' => [
+                'class' => 'form-label mt-4'
+            ]
+            
+            ])
         
         ->add('submit', SubmitType::class,[
             'attr' => [
