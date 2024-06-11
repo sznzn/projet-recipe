@@ -26,7 +26,26 @@ class AppFixtures extends Fixture
         $this->hasher = $hasher;
     }
     public function load(ObjectManager $manager): void
-    {
+    {   
+        //Users
+        $users = [];
+        for( $i=0 ; $i<10 ; $i++){
+            $user = new User();
+            $user->setFullName($this->faker->name())
+                ->setPseudo(mt_rand(0,1) === 1 ? $this->faker->firstName() : null)
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER'])
+                ->setPlainPassword('password');
+                $hashPassword = $this->hasher->hashPassword(
+                $user,
+                $user->getPlainPassword()
+                );
+                $user->setPassword($hashPassword);
+
+            $users[] = $user;
+            $manager->persist($user);
+            }
+
         // Ingredients
         $ingredients = [];
         for($i = 1; $i <= 50; $i++){
@@ -34,6 +53,7 @@ class AppFixtures extends Fixture
             // $manager->persist($product);
             $ingredient->setName($this->faker->word());
             $ingredient->setPrix(mt_rand(0, 100));
+            $ingredient->setUser($users[mt_rand(0, count($users) - 1)]);
             $ingredients[] = $ingredient;
             $manager->persist($ingredient);
         }
@@ -46,31 +66,17 @@ class AppFixtures extends Fixture
             ->setDescription($this->faker->word())
             ->setPrice(mt_rand(0,1) == 1? mt_rand(1, 1000):null)
             ->setDifficulty(mt_rand(0,1) == 1? mt_rand(1, 5):null)
-            ->setIsFavorite(mt_rand(0,1) == 1? true:false);
-
+            ->setIsFavorite(mt_rand(0,1) == 1? true:false)
+            ->setUser($users[mt_rand(0, count($users) - 1)]);
             for($k = 0; $k < mt_rand(5, 15); $k++){
                 $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);  
             }
-            $manager->persist($recipe)
-        ;}
+            $manager->persist($recipe);
+    }
         
-            //Users
-            for( $i=0 ; $i<10 ; $i++){
-                $user = new User();
-                $user->setFullName($this->faker->name())
-                    ->setPseudo(mt_rand(0,1) === 1 ? $this->faker->firstName() : null)
-                    ->setEmail($this->faker->email())
-                    ->setRoles(['ROLE_USER'])
-                    ->setPlainPassword('password');
-                    // $hashPassword = $this->hasher->hashPassword(
-                    //     $user,
-                    //     'password'
-                    // );
-                    // $user->setPassword($hashPassword);
-
-                $manager->persist($user);
+            
                 
-            }
+            
 
         $manager->flush();
     }

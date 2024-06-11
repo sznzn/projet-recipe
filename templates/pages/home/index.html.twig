@@ -9,8 +9,12 @@
         <h1 class="display-4">Bienvenu sur EasyRecipe</h1> 
         <p class="lead">EasyRecip est une application qui va te permettre de créer des recettes à base d'ingrédients que tu auras toi-même créer. Tu pourras partager tes recettes à la communauté du site, ou bien les garder en privées.</p> 
         <hr class="my-4">
+        {% if app.user %}
+        <a class="btn btn-primary btn-lgz" href="{{path('recipe.index')}}" role="button">Votre Recette</a>
+            {% else %}
         <p>Pour commencer, rendez-vous sur la page d'inscription pour utiliser l'application.</p>
-        <a class="btn btn-primary btn-lgz" href="/register" role="button">Inscription</a>
+        <a class="btn btn-primary btn-lgz" href="{{path('security.registration')}}" role="button">Inscription</a>
+        {% endif %}
     </div>
 </div>
 
