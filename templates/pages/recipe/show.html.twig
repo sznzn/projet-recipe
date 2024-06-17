@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    EasyRecipe - {{ recipe.name }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-4">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+
+    <h1 class="mt-4">{{ recipe.name }}</h1>
+    
+    <p>la moyenne de cette recette est : <span class="badge bg-info"> {{recipe.average|{{ variable|number_format('2', '.', ',') }}}}/5</span></p>
+    
+    
+    
+
+    <span class="badge bg-primary">Créée le {{ recipe.createdAt|date('d/m/Y')}}</span>
+
+    {% if recipe.time %}
+        <p>Temp (en minute) : {{ recipe.time }}</p>
+    {% else %}
+        <p class='text-secondary'>Temps non renseigné</p>
+    {% endif %}
+        
+    {% if recipe.nbPeople %}
+        <p>Pour {{ recipe.nbPeople }} personnes</p>
+    {% else %}
+        <p class='text-secondary'>Nombre de personnes non renseigné</p>
+    {% endif %}
+        
+        {% if recipe.difficulty %}
+        <p>Difficulté : {{ recipe.difficulty }}/5</p>
+    {% else %}
+        <p class='text-secondary'>Difficulté non renseigné</p>
+    {% endif %}
+
+    {% if recipe.price %}
+        <p>Prix (en €) : {{ recipe.price }}</p>
+    {% else %}
+        <p class='text-secondary'>Prix non renseigné</p>
+    {% endif %}
+
+    {% if recipe.description %}
+        <p>Description : {{recipe.description|raw}}</p>
+    {% else %}
+        <p class='text-secondary'>Description non renseigné</p>
+    {% endif %}
+    
+    {% for singleIngredient in recipe.ingredient %}
+        <span class="badge bg-primary">{{singleIngredient.name}}</span>
+    {% endfor %}
+        <div class="mark mt-4 w-25">
+            {{ form(form) }}
+        </div>
+    </div>
+
+    
+    
+{% endblock %}
