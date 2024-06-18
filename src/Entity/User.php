@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Symfony\Bridge\DOCTRINE\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueEntity('email')]
+
+
 #[ORM\EntityListeners(["App\EntityListener\UserListener"])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -46,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(min:2, max: 50)]
     private ?string $fullName = null;
     
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(min:2, max: 50)]
     private ?string $pseudo = null;
 

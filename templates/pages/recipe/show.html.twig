@@ -15,9 +15,11 @@
 
 
     <h1 class="mt-4">{{ recipe.name }}</h1>
-    
-    <p>la moyenne de cette recette est : <span class="badge bg-info"> {{recipe.average|{{ variable|number_format('2', '.', ',') }}}}/5</span></p>
-    
+    {% set average = recipe.average|number_format('2', '.', ',') %}
+    <p>la moyenne de cette recette est : <span class="badge bg-info"> {{ average }}/5</span></p>
+    <div class="recipe_image">
+        <img style="max-width: 500px" src="{{ vich_uploader_asset(recipe, 'imageFile')}}">
+    </div>
     
     
 
