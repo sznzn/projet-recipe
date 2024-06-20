@@ -55,7 +55,7 @@ class IngredientController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {   
         $ingredient = new Ingredient();
-        $form = $this->createForm(IngredientType::class, $ingredient);
+        $form = $this->createForm(IngredientType::class, $ingredient, ['submit_label' => 'Créer mon ingredient']);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -79,8 +79,8 @@ class IngredientController extends AbstractController
     public function edit(Ingredient $ingredient, Request $request, EntityManagerInterface $manager) : Response
     {
         
-        $form = $this->createForm(IngredientType::class, $ingredient);
-
+        $form = $this->createForm(IngredientType::class, $ingredient, ['submit_label' => 'Modifier mon ingredient']);
+        
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $ingredient = $form -> getData();

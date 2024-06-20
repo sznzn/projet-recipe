@@ -57,7 +57,7 @@ class RecipeController extends AbstractController
     public function new(Request $request, EntityManagerInterface $manage ) : Response
     {
         $recipe = new Recipe();
-        $form = $this->createForm(RecipeType::class, $recipe);
+        $form = $this->createForm(RecipeType::class, $recipe, ['submit_label' => 'Créer ma recette OK']);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -96,6 +96,9 @@ class RecipeController extends AbstractController
     {   
         $mark = new Mark();
         $form = $this->createForm(MarkType::class, $mark);
+        
+        
+        
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $mark->setUser($this->getUser())
@@ -127,20 +130,9 @@ class RecipeController extends AbstractController
             'recipe' => $recipe,
             'form' =>$form->createView()
         ]);
+
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-   
 
     //Modifier
     #[IsGranted(new Expression('is_granted("ROLE_USER") and user === subject.getUser()'), subject: 'recipe')]
@@ -148,7 +140,7 @@ class RecipeController extends AbstractController
     public function edit(Recipe $recipe, Request $request, EntityManagerInterface $manager) : Response
     {
         
-        $form = $this->createForm(RecipeType::class, $recipe);
+        $form = $this->createForm(RecipeType::class, $recipe, ['submit_label' => 'Modifier ma recette OK']);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -168,7 +160,10 @@ class RecipeController extends AbstractController
 
     #[Route('/recette/suppression/{id}', name: 'recipe.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Recipe $recipe) : Response
-    {
+    {   
+        foreach($recipe->getMarks() as $mark){
+            $manager->remove($mark);
+        }
         if(!$recipe){
             $this->addFlash('danger', 'Recette introuvable');
             return $this->redirectToRoute('recipe.index');

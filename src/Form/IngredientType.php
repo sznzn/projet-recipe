@@ -50,7 +50,7 @@ class IngredientType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Créer mon ingrédient'
+                'label' => $options['submit_label']
             ]);
         
     }
@@ -59,6 +59,7 @@ class IngredientType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Ingredient::class,
+            'submit_label' =>  'Enregistrer'
         ]);
     }
 }

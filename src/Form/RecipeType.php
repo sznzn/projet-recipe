@@ -27,14 +27,18 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class RecipeType extends AbstractType
-{   
+{  
+
+    
     private $token;
     public function __construct(TokenStorageInterface $token)
     {
         $this->token = $token;
     }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
+    {   
+        
         $builder
         ->add('name', TextType::class, [
             'attr' => [
@@ -164,19 +168,24 @@ class RecipeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true
             ])
+            
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Créer ma rectte'
+                'label' => $options['submit_label']
             ])
         ;
     }
-
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+        
             'data_class' => Recipe::class,
+            'submit_label' => 'Enregistrer'
         ]);
     }
+    
+    
 }
