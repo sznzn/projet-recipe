@@ -147,7 +147,10 @@ class RecipeType extends AbstractType
                 'label' => 'Image de la recette',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
-                ]
+                ],
+                'required' => false, //Make the image field optional
+                
+            
             ])
             ->add('ingredient', EntityType::class, [
                 'attr' => [

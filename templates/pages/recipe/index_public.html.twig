@@ -9,7 +9,7 @@
     <h1>Recettes de la communauté</h1>
         <div class="d-flex justify-content-around flex-wrap">
             {% for recipe in recipes %}
-            <div class="card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card border-primary mb-3" style="max-width: 50rem; min-width: 20rem">
                 <div class="card-header">Recette n° {{recipe.id}}</div>
                     <div class="card-body">
                         <h4 class="card-title">{{recipe.name}}</h4>
