@@ -1,0 +1,12 @@
+/* styles.css */
+
+
+.vich-image img {
+    width: 500px;
+    
+    /* 其他样式设置 */
+}
+
+.vich-image a {
+    display: block;
+}

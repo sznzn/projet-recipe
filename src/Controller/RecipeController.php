@@ -154,10 +154,12 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe.index');
         }
         return $this->render('pages/recipe/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'recipe' => $recipe
         ]);
     }
 
+    #[IsGranted(new Expression('is_granted("ROLE_USER") and user === subject.getUser()'), subject: 'recipe')]
     #[Route('/recette/suppression/{id}', name: 'recipe.delete', methods: ['GET'])]
     public function delete(EntityManagerInterface $manager, Recipe $recipe) : Response
     {   
