@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +16,16 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Mailer\MailerInterface;
 
 
+
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'contact.index')]
-    public function index(Request $request, EntityManagerInterface $manager, MailerInterface $mailer): Response
+    public function index(
+                        Request $request, 
+                        EntityManagerInterface $manager,
+                        // MailerInterface $mailer
+                        MailService $mailService
+                        ): Response
     {
         $contact = new Contact();
 
@@ -37,26 +44,30 @@ class ContactController extends AbstractController
             $manager->flush();
 
 
-            //email
-            $email = (new TemplatedEmail())
-            ->from($contact->getEmail())
-            ->to('admin@easyrecipe.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject($contact->getSubject())
-            ->text('Sending emails is fun again!')
-             // path of the Twig template to render
-            ->htmlTemplate('emails/contact.html.twig')
+            //email avec service 
+            $mailService->sendEmail(
+                $contact->getEmail(),
+                $contact->getSubject(),
+                'emails/contact.html.twig',
+                ['contact' => $contact]
+            );
 
-            // pass variables (name => value) to the template
-            ->context([
-                'contact' => $contact,
+
+
+
+/*emaii sans service */
+            // $email = (new TemplatedEmail())
+            // ->from($contact->getEmail())
+            // ->to('admin@easyrecipe.com')
+            // ->subject($contact->getSubject())
+            // ->text('Sending emails is fun again!')
+            // ->htmlTemplate('emails/contact.html.twig')
+            // ->context([
+            //     'contact' => $contact,
+            // ]);
                 
-            ]);
             
-            $mailer->send($email);
+            // $mailer->send($email);
 
 
             $this->addFlash('success', 'Votre message a été envoyé');
