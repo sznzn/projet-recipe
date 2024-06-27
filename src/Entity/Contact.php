@@ -20,7 +20,7 @@ class Contact
     #[Assert\Length(min:2, max: 50)]
     private ?string $fullName = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180)]
     #[Assert\Length(min:2, max: 180)]
     #[Assert\Email()]
     private ?string $email = null;
